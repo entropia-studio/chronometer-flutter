@@ -3,13 +3,25 @@ import 'package:flutter/material.dart';
 
 void main() => runApp(Chronometer());
 
-class Chronometer extends StatelessWidget {
+class Chronometer extends StatefulWidget {
+  @override
+  _ChronometerState createState() => _ChronometerState();
+}
+
+class _ChronometerState extends State<Chronometer> {
+  bool isRunning = false;
+  final timerChrono = new TimerChrono();
+
   @override
   Widget build(BuildContext context) {
-    final timerChrono = new TimerChrono();
-    final mainFontStyle = TextStyle(
-      fontSize: 50
-    );
+    final mainFontStyle = TextStyle(fontSize: 50);
+
+    if (isRunning) {
+      timerChrono.play();
+    } else {
+      timerChrono.pause();
+    }
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Chronometer App',
@@ -24,7 +36,10 @@ class Chronometer extends StatelessWidget {
               stream: timerChrono.timer,
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  return Text(snapshot.data.toString(), style: mainFontStyle,);
+                  return Text(
+                    snapshot.data.toString(),
+                    style: mainFontStyle,
+                  );
                 } else {
                   return Text('00:00:00', style: mainFontStyle);
                 }
@@ -32,36 +47,43 @@ class Chronometer extends StatelessWidget {
             ),
           ),
         ),
-        floatingActionButton: _getButtons(timerChrono),
+        floatingActionButton: _getButtons(),
       ),
     );
   }
 
-  Widget _getButtons(TimerChrono timerChrono) {
+  Widget _getButtons() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         FloatingActionButton(
+          backgroundColor: Colors.redAccent,
           child: Icon(Icons.stop),
           onPressed: () {
             timerChrono.stop();
+            setState(() {
+              isRunning = false;
+            });
           },
         ),
         SizedBox(width: 30),
-        FloatingActionButton(
-          child: Icon(Icons.play_arrow),
-          onPressed: () {
-            print('play');
-            timerChrono.play();
-          },
-        ),
-        SizedBox(width: 30),
-        FloatingActionButton(
-          child: Icon(Icons.pause),
-          onPressed: () {
-            timerChrono.pause();
-          },
-        ),
+        isRunning
+            ? FloatingActionButton(                
+                child: Icon(Icons.pause),
+                onPressed: () {
+                  setState(() {
+                    isRunning = false;
+                  });
+                },
+              )
+            : FloatingActionButton(
+                child: Icon(Icons.play_arrow),
+                onPressed: () {
+                  setState(() {
+                    isRunning = true;
+                  });
+                },
+              )
       ],
     );
   }
