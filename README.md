@@ -1,6 +1,6 @@
 # chronometer
 
-A new Flutter project.
+Simple chronometer implementing BLOC pattern to increment timer.
 
 ## Getting Started
 
