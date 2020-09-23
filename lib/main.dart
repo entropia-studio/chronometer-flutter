@@ -57,7 +57,7 @@ class _ChronometerState extends State<Chronometer> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         FloatingActionButton(
-          backgroundColor: Colors.redAccent,
+          backgroundColor: Colors.black54,
           child: Icon(Icons.stop),
           onPressed: () {
             timerChrono.stop();
@@ -69,6 +69,7 @@ class _ChronometerState extends State<Chronometer> {
         SizedBox(width: 30),
         isRunning
             ? FloatingActionButton(                
+                backgroundColor: Colors.red,
                 child: Icon(Icons.pause),
                 onPressed: () {
                   setState(() {
@@ -77,6 +78,7 @@ class _ChronometerState extends State<Chronometer> {
                 },
               )
             : FloatingActionButton(
+                backgroundColor: Colors.green,
                 child: Icon(Icons.play_arrow),
                 onPressed: () {
                   setState(() {
